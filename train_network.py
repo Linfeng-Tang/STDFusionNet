@@ -2,7 +2,7 @@ import tensorflow as tf
 from utils import weights_spectral_norm
 
 
-class STMFusionNet():
+class STDFusionNet():
     def vi_feature_extraction_network(self, vi_image):
         with tf.compat.v1.variable_scope('vi_extraction_network'):
             with tf.compat.v1.variable_scope('conv1'):
@@ -318,8 +318,8 @@ class STMFusionNet():
                 fusion_image = block4_output
         return fusion_image
 
-    def STMFusion_model(self, vi_image, ir_image):
-        with tf.variable_scope("STMFusion_model"):
+    def STDFusion_model(self, vi_image, ir_image):
+        with tf.variable_scope("STDFusion_model"):
             vi_feature = self.vi_feature_extraction_network(vi_image)
             ir_feature = self.ir_feature_extraction_network(ir_image)
             feature = tf.concat([vi_feature, ir_feature], axis=-1)

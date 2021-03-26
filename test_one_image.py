@@ -20,13 +20,13 @@ from utils import (
     l2_norm
 )
 
-from test_network import STMFusionNet
+from test_network import STDFusionNet
 
-STMFusion_net = STMFusionNet()
+STDFusion_net = STDFusionNet()
 warnings.filterwarnings('ignore')
 
 
-class STMFusion:
+class STDFusion:
     def imread(self, path, is_grayscale=True):
         """
         Read image using its path.
@@ -69,7 +69,7 @@ class STMFusion:
         train_data_vi = np.asarray(sub_vi_sequence)
         return train_data_ir, train_data_vi
 
-    def STMFusion(self):
+    def STDFusion(self):
         num_epochs = 30
         num_epoch = 28
         for idx_num in range(num_epoch, num_epochs):
@@ -83,12 +83,9 @@ class STMFusion:
                 with tf.name_scope('VI_input'):
                     # visible image patch
                     vi_images = tf.placeholder(tf.float32, [1, None, None, 1], name='vi_images')
-                    # self.labels_vi_gradient=gradient(self.labels_vi)
 
                 with tf.name_scope('fusion'):
-                    self.fusion_image, self.feature = STMFusion_net.STMFusion_model(vi_images, ir_images, fusion_reader)
-                # config = tf.ConfigProto()
-                # config.gpu_options.allow_growth=True
+                    self.fusion_image, self.feature = STDFusion_net.STDFusion_model(vi_images, ir_images, fusion_reader)
                 with tf.Session() as sess:
                     init_op = tf.global_variables_initializer()
                     sess.run(init_op)
@@ -115,6 +112,6 @@ class STMFusion:
                 num_epoch = num_epoch + 1
             tf.reset_default_graph()
 
-
-test_STMFusion = STMFusion()
-test_STMFusion.STMFusion()
+if __name__ == '__main__':
+    test_STDFusion = STDFusion()
+    test_STDFusion.STDFusion()

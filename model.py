@@ -2,7 +2,7 @@ import os
 import time
 import numpy as np
 import tensorflow as tf
-from train_network import STMFusionNet
+from train_network import STDFusionNet
 from utils import (
     read_data,
     input_setup,
@@ -11,10 +11,10 @@ from utils import (
     gradient
 )
 
-STMFusion_net = STMFusionNet()
+STDFusion_net = STDusionNet()
 
 
-class STMFusion(object):
+class STDFusion(object):
     def __init__(self,
                  sess,
                  image_size=132,
@@ -42,36 +42,22 @@ class STMFusion(object):
             self.ir_mask = tf.compat.v1.placeholder(tf.float32, [None, self.image_size, self.image_size, self.c_dim], name='ir_mask')
 
         with tf.name_scope('Fusion'):
-            self.fusion_images = STMFusion_net.STMFusion_model(self.vi_images, self.ir_images)
+            self.fusion_images = STDFusion_net.STDFusion_model(self.vi_images, self.ir_images)
         with tf.name_scope("learn_rate"):
             self.lr = tf.placeholder(tf.float32, name='lr')
 
         with tf.name_scope('g_loss'):
-            # self.ir_mask = (self.ir_mask + 1) / 2.0
-            # self.ir_p_loss_train = tf.multiply(self.ir_mask, tf.abs(self.fusion_images - self.ir_images))
-            # self.vi_p_loss_train = tf.multiply(1 - self.ir_mask, tf.abs(self.fusion_images - self.vi_images))
-            self.ir_p_loss_train = tf.abs(self.fusion_images - self.ir_images)
-            self.vi_p_loss_train = tf.abs(self.fusion_images - self.vi_images)
-            # self.Image_vi_grad = gradient(self.vi_images)
-            # self.Image_ir_grad = gradient(self.ir_images)
-            # self.Image_fused_grad = gradient(self.fusion_images)
-            # self.Image_max_grad_bin = tf.round((self.Image_vi_grad + self.Image_ir_grad) // (
-            #             tf.abs(self.Image_vi_grad + self.Image_ir_grad) + 0.0000000001)) * tf.maximum(
-            #     tf.abs(self.Image_vi_grad), tf.abs(self.Image_ir_grad))
-            # self.Image_fused_grad_bin = self.Image_fused_grad
-            # self.g_loss_grad = tf.abs(self.Image_fused_grad_bin - self.Image_max_grad_bin)
-
-            # self.ir_grad_loss_train = tf.multiply(self.ir_mask, tf.abs(gradient(self.fusion_images) - gradient(self.ir_images)))
-            # self.vi_grad_loss_train = tf.multiply(1 - self.ir_mask, tf.abs(gradient(self.fusion_images) -
-            #                                                                  gradient(self.vi_images)))
-            self.ir_grad_loss_train = tf.abs(gradient(self.fusion_images) - gradient(self.ir_images))
-            self.vi_grad_loss_train = tf.abs(gradient(self.fusion_images) - gradient(self.vi_images))
+            self.ir_mask = (self.ir_mask + 1) / 2.0
+            self.ir_p_loss_train = tf.multiply(self.ir_mask, tf.abs(self.fusion_images - self.ir_images))
+            self.vi_p_loss_train = tf.multiply(1 - self.ir_mask, tf.abs(self.fusion_images - self.vi_images))
+            self.ir_grad_loss_train = tf.multiply(self.ir_mask, tf.abs(gradient(self.fusion_images) - gradient(self.ir_images)))
+            self.vi_grad_loss_train = tf.multiply(1 - self.ir_mask, tf.abs(gradient(self.fusion_images) - gradient(self.vi_images)))
 
             self.ir_p_loss = tf.reduce_mean(self.ir_p_loss_train)
             self.vi_p_loss = tf.reduce_mean(self.vi_p_loss_train)
             self.ir_grad_loss = tf.reduce_mean(self.ir_grad_loss_train)
             self.vi_grad_loss = tf.reduce_mean(self.vi_grad_loss_train)
-            self.g_loss_2 = 1 * self.vi_p_loss + 1 * self.vi_grad_loss + 0.985 * self.ir_p_loss + 0.985 * self.ir_grad_loss
+            self.g_loss_2 = 1 * self.vi_p_loss + 1 * self.vi_grad_loss + 7 * self.ir_p_loss + 7 * self.ir_grad_loss
 
             # tf.compat.v1.summary.scalar which is used to display scalar information
             # used to display loss
@@ -86,8 +72,6 @@ class STMFusion(object):
             tf.compat.v1.summary.image('vi_image', tf.expand_dims(self.vi_images[1, :, :, :], 0))
             tf.compat.v1.summary.image('ir_image', tf.expand_dims(self.ir_images[1, :, :, :], 0))
             tf.compat.v1.summary.image('fusion_images', tf.expand_dims(self.fusion_images[1, :, :, :], 0))
-            # tf.compat.v1.summary.image('attention_mask', tf.expand_dims(self.att_mask[1, :, :, :], 0))
-            # tf.compat.v1.summary.image('fusion_feature', tf.expand_dims(self.fusion_feature[1, :, :, :], 0))
 
     def form_results(self, results_path='./Results'):
         """
@@ -97,7 +81,7 @@ class STMFusion(object):
         if not os.path.exists(results_path):
             os.mkdir(results_path)
         folder_name = "/{0}_{1}_{2}_model". \
-            format('STMFusion', self.batch_size, 'Pixel_Grad')
+            format('STDFusion', self.batch_size, 'Pixel_Grad')
         tensorboard_path = results_path + folder_name + '/Tensorboard'
         saved_model_path = results_path + folder_name + '/Saved_models/'
         log_path = results_path + folder_name + '/log'
@@ -145,10 +129,7 @@ class STMFusion(object):
         with tf.name_scope('train_step'):
             self.train_generator_op = tf.train.AdamOptimizer(config.learning_rate).minimize(self.g_loss_total, var_list=self.g_vars)
 
-
-        # 将所有统计的量合起来
         self.summary_op = tf.summary.merge_all()
-        # 生成日志文件
         tensorboard_path, saved_model_path, log_path = self.form_results()
         writer = tf.summary.FileWriter(logdir=tensorboard_path, graph=self.sess.graph)
 
@@ -236,7 +217,7 @@ class STMFusion(object):
 
     def save(self, checkpoint_dir, step):
         model_name = "Fusion.model"
-        model_dir = "%s_%s_%s" % ("STMFusion", self.batch_size, "Pixel_Grad_ablation")
+        model_dir = "%s_%s_%s" % ("STDFusion", self.batch_size, "Pixel_Grad")
         checkpoint_dir = os.path.join(checkpoint_dir, model_dir)
 
         if not os.path.exists(checkpoint_dir):
@@ -248,7 +229,7 @@ class STMFusion(object):
 
     def load(self, checkpoint_dir):
         print(" [*] Reading checkpoints...")
-        model_dir = "%s_%s_%s" % ("STMFusion", self.label_size, "Pixel_Grad")
+        model_dir = "%s_%s_%s" % ("STDFusion", self.label_size, "Pixel_Grad")
         checkpoint_dir = os.path.join(checkpoint_dir, model_dir)
         ckpt = tf.train.get_checkpoint_state(checkpoint_dir)
         if ckpt and ckpt.model_checkpoint_path:

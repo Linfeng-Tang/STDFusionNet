@@ -2,7 +2,7 @@ import tensorflow as tf
 from utils import weights_spectral_norm
 
 
-class STMFusionNet():
+class STDFusionNet():
     def feature_padding(self, x, kernel=3, stride=1, pad=1):
         if (kernel - stride) % 2 == 0:
             pad_top = pad
@@ -378,8 +378,8 @@ class STMFusionNet():
                 fusion_image = block4_output
         return fusion_image
 
-    def STMFusion_model(self, vi_image, ir_image, reader):
-        with tf.variable_scope("STMFusion_model"):
+    def STDFusion_model(self, vi_image, ir_image, reader):
+        with tf.variable_scope("STDFusion_model"):
             vi_encoding_feature = self.vi_feature_extraction_network(vi_image, reader)
             ir_encoding_feature = self.ir_feature_extraction_network(ir_image, reader)
             feature = tf.concat([vi_encoding_feature, ir_encoding_feature], axis=-1)

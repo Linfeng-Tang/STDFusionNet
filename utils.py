@@ -45,17 +45,11 @@ def preprocess(path, scale=3):
       input_: image applied bicubic interpolation (low-resolution)
       label_: image with original resolution (high-resolution)
     """
-    # 读到图片
     image = imread(path, is_grayscale=True)
-    # 将图片label裁剪为scale的倍数
     label_ = modcrop(image, scale)
-
     # Must be normalized
-    # image = (image - 127.5) / 127.5
-    # label_ = (image - 127.5) / 127.5
     image = image / 255
     label_ = image / 255
-    # 下采样之后再插�?  input_ = scipy.ndimage.interpolation.zoom(label_, (1./scale), prefilter=False)
     input_ = scipy.ndimage.interpolation.zoom(input_, (scale / 1.), prefilter=False)
 
     return input_, label_
@@ -73,14 +67,12 @@ def prepare_data(sess, dataset):
         data_dir = os.path.join(os.getcwd(), dataset)
         data = glob.glob(os.path.join(data_dir, "*.bmp"))
         data.extend(glob.glob(os.path.join(data_dir, "*.tif")))
-        # 将图片按序号排序
         data.sort(key=lambda x: int(x[len(data_dir) + 1:-4]))
     else:
         data_dir = os.path.join(os.sep, (os.path.join(os.getcwd(), dataset)))
         data = glob.glob(os.path.join(data_dir, "*.bmp"))
         data.extend(glob.glob(os.path.join(data_dir, "*.tif")))
         data.sort(key=lambda x: int(x[len(data_dir) + 1:-4]))
-    # print(data)
     print("data length: ", len(data))
 
     return data
@@ -110,7 +102,6 @@ def imread(path, is_grayscale=True):
     Default value is gray-scale, and image is read by YCbCr format as the paper said.
     """
     if is_grayscale:
-        # flatten=True 以灰度图的形式读�?
         return scipy.misc.imread(path, flatten=True, mode='YCbCr').astype(np.float)
     else:
         return scipy.misc.imread(path, mode='YCbCr').astype(np.float)
@@ -143,31 +134,22 @@ def input_setup(sess, config, data_dir, index=0):
     """
     # Load data path
     if config.is_train:
-        # 取到所有的原始图片的地址
         data = prepare_data(sess, dataset=data_dir)
     else:
         data = prepare_data(sess, dataset=data_dir)
 
     sub_input_sequence = []
-    # 配置填充的参数
 
     if config.is_train:
         for i in range(len(data)):
-            # input_, label_ = preprocess(data[i], config.scale)
-            input_ = (imread(data[i]) - 127.5) / 127.5#imread(data[i]) / 255 #
+            input_ = (imread(data[i]) - 127.5) / 127.5
             if len(input_.shape) == 3:
                 h, w, _ = input_.shape
             else:
                 h, w = input_.shape
-            # �?4步长采样小patch
             for x in range(0, h - config.image_size + 1, config.stride):
                 for y in range(0, w - config.image_size + 1, config.stride):
-                    # print(x+padding,x+padding+config.label_size, y+padding,y+padding+config.label_size)
-                    sub_input = input_[x:x + config.image_size, y:y + config.image_size]  # [33 x 33]
-                    # print(sub_input.reshape)
-                    # 注意这里的padding，前向传播时由于卷积是没有padding的，所以实际上预测的是测试patch的中间部�?
-
-                    # print(sub_label.shape)
+                    sub_input = input_[x:x + config.image_size, y:y + config.image_size]
                     # Make channel value
                     if data_dir == "Train":
                         sub_input = cv2.resize(sub_input, (config.image_size / 4, config.image_size / 4),
@@ -180,7 +162,7 @@ def input_setup(sess, config, data_dir, index=0):
                     sub_input_sequence.append(sub_input)
 
     else:
-        input_ = (imread(data[index]) - 127.5) / 127.5#imread(data[index]) / 255 #
+        input_ = (imread(data[index]) - 127.5) / 127.5
         if len(input_.shape) == 3:
             h_real, w_real, _ = input_.shape
         else:
@@ -219,7 +201,6 @@ def imsave(image, path):
 
 
 def merge(images, size):
-    # 将融合的图像字块合并在一起
     h, w = images.shape[1], images.shape[2]
     img = np.zeros((h * size[0], w * size[1], 1))
     for idx, image in enumerate(images):
