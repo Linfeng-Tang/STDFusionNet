@@ -1,5 +1,5 @@
 # from train import model
-from model import STMFusion
+from model import STDFusion
 from utils import input_setup
 import numpy as np
 import tensorflow as tf
@@ -35,7 +35,7 @@ def main(_):
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     with tf.Session(config=config) as sess:
-        srcnn = STMFusion(sess,
+        srcnn = STDFusion(sess,
                       image_size=FLAGS.image_size,
                       label_size=FLAGS.label_size,
                       batch_size=FLAGS.batch_size,
