@@ -16,6 +16,6 @@ If this work is helpful to you, please cite it as：
   title={STDFusionNet: An Infrared and Visible Image Fusion Network Based on Salient Target Detection},\
   author={Jiayi Ma, Linfeng Tang, Meilong Xu, Hao Zhang, and Guobao Xiao},\
   journal={IEEE Transactions on Instrumentation and Measurement},\
-  year={2021},\ 
+  year={2021},\
   publisher={IEEE}
 }
