@@ -16,9 +16,9 @@ If this work is helpful to you, please cite it as：
   author={Jiayi Ma, Linfeng Tang, Meilong Xu, Hao Zhang, and Guobao Xiao},
   journal={IEEE Transactions on Instrumentation and Measurement},
   year={2021},
-  volume={},
+  volume={70},
   number={},
-  pages={1-1},
+  pages={1-13},
   doi={10.1109/TIM.2021.3075747}，
   publisher={IEEE}
 }
