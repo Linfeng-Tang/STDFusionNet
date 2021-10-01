@@ -11,7 +11,7 @@ from utils import (
     gradient
 )
 
-STDFusion_net = STDusionNet()
+STDFusion_net = STDFusionNet()
 
 
 class STDFusion(object):
