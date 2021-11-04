@@ -9,6 +9,13 @@ Run "CUDA_VISIBLE_DEVICES=0 python train.py" to train the network.
 
 Run "CUDA_VISIBLE_DEVICES=0 python test_one_image.py" to test the network.
 
+The recommended environment to install is：
+python 3.6.0
+TensorFlow-GPU 1.14.0
+scipy 1.2.0
+OpenCV 3.4.2
+numpy 1.19.2
+
 If this work is helpful to you, please cite it as：
 ```
 @article{ma2021STDFusionNet,
