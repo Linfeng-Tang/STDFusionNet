@@ -5,7 +5,7 @@
 The code of "STDFusionNet: An Infrared and Visible Image Fusion Network Based on Salient Target Detection"
 ## Architecture
 ![The architecture of the proposed infrared and visible image fusion network based on the salient target detection. The mask is only needed to construct
-loss function in the training of the model, and is not needed in the testing phase.](https://github.com/Linfeng-Tang/STDFusionNet/blob/main/Figure/Architecture.pdf)
+loss function in the training of the model, and is not needed in the testing phase.](https://github.com/Linfeng-Tang/STDFusionNet/blob/main/Figure/Architecture.png)
 
 ## To Train
 
