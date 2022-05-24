@@ -1,32 +1,15 @@
-
-
 # STDFusionNet
-
 The code of "STDFusionNet: An Infrared and Visible Image Fusion Network Based on Salient Target Detection"
-## Architecture
-![The architecture of the proposed infrared and visible image fusion network based on the salient target detection. The mask is only needed to construct
-loss function in the training of the model, and is not needed in the testing phase.](https://github.com/Linfeng-Tang/STDFusionNet/blob/main/Figure/Architecture.png)
 
-## To Train
+**To Train:**
 
-Run "**CUDA_VISIBLE_DEVICES=0 python train.py**" to train the network.
+Run "CUDA_VISIBLE_DEVICES=0 python train.py" to train the network.
 
-## To Test
+**To Test:**
 
-Run "**CUDA_VISIBLE_DEVICES=0 python test_one_image.py**" to test the network.
+Run "CUDA_VISIBLE_DEVICES=0 python test_one_image.py" to test the network.
 
-## Recommended Environment
-
- 
-
- - [ ] List item
- - [ ] python 3.6.0
- - [ ] TensorFlow-GPU 1.14.0
- - [ ] scipy 1.2.0
- - [ ] OpenCV 3.4.2
- - [ ] numpy 1.19.2
-
-## If this work is helpful to you, please cite it as：
+If this work is helpful to you, please cite it as：
 ```
 @article{ma2021STDFusionNet,
   title={STDFusionNet: An Infrared and Visible Image Fusion Network Based on Salient Target Detection},

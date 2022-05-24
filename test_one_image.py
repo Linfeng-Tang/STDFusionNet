@@ -75,7 +75,7 @@ class STDFusion:
         for idx_num in range(num_epoch, num_epochs):
             print("num_epoch:\t", num_epoch)
             while (num_epoch == idx_num):
-                model_path = './checkpoint/Fusion.model-' + str(num_epoch)
+                model_path = './checkpoint/STDFusion_32_Pixel_Grad/Fusion.model-' + str(num_epoch)
                 fusion_reader = tf.compat.v1.train.NewCheckpointReader(model_path)
                 with tf.name_scope('IR_input'):
                     # infrared image patch
@@ -106,9 +106,9 @@ class STDFusion:
                         if not os.path.exists(image_path):
                             os.makedirs(image_path)
                         num = "%02d" % (i + 1)
-                        image_path = os.path.join(image_path, num + ".bmp")
+                        image_path = os.path.join(image_path, num + ".png")
                         self.imsave(result, image_path)
-                        print("Testing [%d] successfully,Testing time is [%f]" % (i + 1, end - start))
+                        print("Testing [%d] successfully,Testing time is [%f] Save path is:[%s]" % (i + 1, end - start, image_path))
                 num_epoch = num_epoch + 1
             tf.reset_default_graph()
 
