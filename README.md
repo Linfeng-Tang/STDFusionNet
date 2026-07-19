@@ -1,12 +1,9 @@
-# STDFusionNet
+<h1 align="center"><a href="https://ieeexplore.ieee.org/document/9416507">STDFusionNet: An Infrared and Visible Image Fusion Network Based on Salient Target Detection</a></h1>
 
-<p align="center">
-  <a href="https://esi.help.clarivate.com/Content/overview.htm"><img src="https://img.shields.io/badge/ESI_Highly_Cited_Paper-Top_1%25-2F6FB0?style=for-the-badge" alt="ESI Highly Cited Paper (top 1%)"></a>
-  <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=PyRqpAsAAAAJ&citation_for_view=PyRqpAsAAAAJ:9yKSN-GCB0IC"><img src="https://img.shields.io/badge/Google_Scholar_Citations-686-4285F4?style=for-the-badge&logo=google-scholar&logoColor=white" alt="Google Scholar citations"></a>
-</p>
-<p align="center"><sub>Google Scholar citation count updated July 18, 2026.</sub></p>
-
-The code of "[STDFusionNet: An Infrared and Visible Image Fusion Network Based on Salient Target Detection](https://ieeexplore.ieee.org/document/9416507)"
+<p align="center"><a href="https://sites.google.com/site/jiayima2013">Jiayi Ma</a>&emsp; <a href="https://github.com/Linfeng-Tang">Linfeng Tang</a>&emsp; Meilong Xu&emsp; Hao Zhang&emsp; Guobao Xiao</p>
+<p align="center"><strong>Wuhan University</strong></p>
+<p align="center"><strong>IEEE Transactions on Instrumentation and Measurement</strong> &middot; 2021</p>
+<p align="center"><a href="https://esi.help.clarivate.com/Content/overview.htm"><img src="https://img.shields.io/badge/%F0%9F%8F%86_ESI_Highly_Cited-Top_1%25-D4A017?style=flat-square" alt="ESI Highly Cited Paper (top 1%)"></a><br><sub><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=PyRqpAsAAAAJ&citation_for_view=PyRqpAsAAAAJ:9yKSN-GCB0IC">Google Scholar &middot; <strong>686 citations</strong></a> &middot; updated July 18, 2026</sub></p>
 
 **To Train:**
 
